@@ -1,0 +1,15 @@
+---
+- name: Configure Windows Domain Controller
+  hosts: DomainContoller
+  become: true
+  tasks:
+  
+	- name: Create Domain
+	  win_domain: 
+		dns_domain_name: dc01.lab
+		safe_mode_password: Password123
+	  register: status
+
+	- name: Reboot after domain install
+	  win_reboot: 
+	  when: status.reboot_required
